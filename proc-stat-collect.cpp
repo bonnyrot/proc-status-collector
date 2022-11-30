@@ -1,6 +1,3 @@
-
-using namespace std;
-
 #include <iostream>
 #include <vector>
 #include<thread>
@@ -13,33 +10,27 @@ using namespace std;
 #include <signal.h>
 #include <chrono>
 #include <functional>
+using namespace std; // bad practice
 
 static void getStatus(pid_t pid) {
   char procpath[100];
   char buf[100];
   int pfd;
-
   char Name[100];
-
   FILE * proc;
 
   sprintf(procpath, "/proc/%d/status", pid);
-
   proc = fopen(procpath, "r");
   if (proc) {
-
     fgets(buf, 256, proc);
-    sscanf(buf, "Name:\t%s", Name);
-
+    sscanf(buf, "Name:\t%s", Name);   // c-style
   }
-  printf("%s", Name);
   cout << Name << endl;
-
 }
 
 void iterateProcesses(void) {
-  struct dirent * dirent;
-  DIR * dir;
+  struct dirent* dirent;         // c-style
+  DIR* dir;
   int pid;
 
   if (!(dir = opendir("/proc"))) {
@@ -72,7 +63,6 @@ void run(std:: function < void(void) > f, int duration) {
 }
 
 int main(int argc, char * argv[]) {
-
   signal(SIGINT, sigHandler);
   run(iterateProcesses, 1000);
   while (true);
